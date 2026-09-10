@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>buahmurah.id — ERP</title>
+<meta name="theme-color" content="#123C86">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="buahmurah.id">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue-900:#0B2559;
+    --blue-700:#123C86;
+    --blue-600:#17439E;
+    --blue-500:#1E56C9;
+    --blue-200:#C7D9F7;
+    --blue-100:#E7EEFC;
+    --yellow-500:#FFC93C;
+    --yellow-600:#F0B316;
+    --yellow-100:#FFF6DC;
+    --bg:#FAF9F4;
+    --surface:#FFFFFF;
+    --text:#152238;
+    --text-muted:#5B6B85;
+    --border:#E4E7EF;
+    --danger:#C4443A;
+    --danger-bg:#FBEAE8;
+    --success:#1E8E5A;
+    --success-bg:#E7F6EE;
+    --radius:14px;
+    --radius-sm:9px;
+    --shadow: 0 8px 24px rgba(11,37,89,0.08);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-size:15px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand,.big-num{font-family:'Manrope',sans-serif;}
+  button{font-family:'Inter',sans-serif;cursor:pointer;}
+  input,select,textarea{font-family:'Inter',sans-serif;font-size:14.5px;}
+  ::selection{background:var(--yellow-100);}
+  a{color:var(--blue-600);}
+  #app{min-height:100vh;}
+
+  /* ---------- Login ---------- */
+  .login-wrap{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(30,86,201,0.10), transparent 40%),
+      radial-gradient(circle at 88% 82%, rgba(255,201,60,0.16), transparent 42%),
+      var(--bg);
+    padding:24px;
+  }
+  .login-card{
+    width:100%;max-width:920px;background:var(--surface);border-radius:20px;
+    box-shadow:var(--shadow);overflow:hidden;display:grid;grid-template-columns:1fr 1fr;
+    border:1px solid var(--border);
+  }
+  @media (max-width:760px){ .login-card{grid-template-columns:1fr;} }
+  .login-side{
+    background:linear-gradient(160deg,var(--blue-700),var(--blue-900));
+    color:#fff;padding:44px 38px;display:flex;flex-direction:column;justify-content:space-between;
+    position:relative;
+  }
+  .login-side::after{
+    content:"";position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;
+    background:var(--yellow-500);border-radius:50%;opacity:0.18;
+  }
+  .brand{font-size:26px;font-weight:800;letter-spacing:-0.02em;}
+  .brand .dot{color:var(--yellow-500);}
+  .login-side p{color:#C9D8F5;font-size:14px;max-width:280px;}
+  .login-tagline{font-size:15px;color:#E7EEFC;line-height:1.6;}
+  .login-form-side{padding:44px 40px;display:flex;flex-direction:column;justify-content:center;}
+  .role-picker{display:flex;gap:10px;margin-bottom:26px;}
+  .role-btn{
+    flex:1;padding:12px 10px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
+    background:#fff;font-weight:600;font-size:13.5px;color:var(--text-muted);transition:all .15s;
+  }
+  .role-btn.active{border-color:var(--blue-500);color:var(--blue-700);background:var(--blue-100);}
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%;padding:11px 13px;border-radius:var(--radius-sm);border:1.5px solid var(--border);
+    background:#fff;color:var(--text);outline:none;transition:border-color .15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{border-color:var(--blue-500);}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px 18px;border-radius:var(--radius-sm);border:none;font-weight:700;font-size:14px;
+    transition:transform .08s, box-shadow .15s; white-space:nowrap;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--blue-500);color:#fff;box-shadow:0 4px 14px rgba(30,86,201,0.28);}
+  .btn-primary:hover{background:var(--blue-600);}
+  .btn-yellow{background:var(--yellow-500);color:var(--blue-900);box-shadow:0 4px 14px rgba(255,201,60,0.35);}
+  .btn-yellow:hover{background:var(--yellow-600);}
+  .btn-ghost{background:transparent;color:var(--text-muted);border:1.5px solid var(--border);}
+  .btn-ghost:hover{border-color:var(--blue-500);color:var(--blue-700);}
+  .btn-danger{background:var(--danger-bg);color:var(--danger);}
+  .btn-block{width:100%;}
+  .login-error{background:var(--danger-bg);color:var(--danger);padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:14px;}
+  .login-hint{font-size:12px;color:var(--text-muted);margin-top:14px;line-height:1.6;background:var(--blue-100);padding:10px 12px;border-radius:8px;}
+
+  /* ---------- App shell ---------- */
+  .shell{display:flex;min-height:100vh;}
+  .sidebar{
+    width:230px;flex-shrink:0;background:linear-gradient(180deg,var(--blue-700),var(--blue-900));
+    color:#fff;display:flex;flex-direction:column;padding:22px 16px;position:sticky;top:0;height:100vh;
+  }
+  .sidebar .brand{color:#fff;font-size:19px;margin-bottom:2px;}
+  .sidebar .role-tag{font-size:11.5px;color:var(--yellow-500);font-weight:700;letter-spacing:.02em;margin-bottom:26px;}
+  .nav-item{
+    display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;color:#CFDBF6;
+    font-weight:600;font-size:14px;margin-bottom:4px;border:none;background:transparent;width:100%;text-align:left;
+  }
+  .nav-item .ic{width:18px;height:18px;flex-shrink:0;}
+  .nav-item:hover{background:rgba(255,255,255,0.07);color:#fff;}
+  .nav-item.active{background:var(--yellow-500);color:var(--blue-900);}
+  .sidebar-foot{margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.12);}
+  .user-chip{font-size:12.5px;color:#C9D8F5;margin-bottom:10px;word-break:break-all;}
+
+  .main{flex:1;min-width:0;}
+  .topbar{
+    padding:18px 30px;border-bottom:1px solid var(--border);background:var(--surface);
+    display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;
+  }
+  .topbar h1{font-size:19px;margin:0;font-weight:800;}
+  .topbar .sub{color:var(--text-muted);font-size:13px;margin-top:2px;}
+  .content{padding:26px 30px 60px;max-width:1180px;}
+
+  .mobile-topbar{display:none;}
+  @media (max-width:880px){
+    .sidebar{display:none;}
+    .mobile-topbar{
+      display:flex;align-items:center;justify-content:space-between;background:linear-gradient(160deg,var(--blue-700),var(--blue-900));
+      color:#fff;padding:14px 18px;position:sticky;top:0;z-index:10;
+    }
+    .mobile-topbar .brand{color:#fff;font-size:17px;}
+    .mobile-tabs{display:flex;overflow-x:auto;gap:8px;padding:10px 14px;background:var(--blue-900);position:sticky;top:52px;z-index:9;}
+    .mobile-tabs .nav-item{width:auto;flex-shrink:0;white-space:nowrap;color:#CFDBF6;}
+    .content{padding:18px 16px 50px;}
+    .topbar{display:none;}
+  }
+
+  /* ---------- Cards / tables ---------- */
+  .grid{display:grid;gap:16px;}
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:22px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;}
+  .stat-card .lbl{font-size:12.5px;color:var(--text-muted);font-weight:600;margin-bottom:6px;}
+  .big-num{font-size:24px;font-weight:800;color:var(--blue-800,var(--blue-700));}
+  .big-num.yellow{color:var(--yellow-600);}
+  .big-num.pos{color:var(--success);}
+  .big-num.neg{color:var(--danger);}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;margin-bottom:20px;}
+  .card h2{font-size:16px;margin:0 0 16px;font-weight:800;}
+  .card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+  .card-head h2{margin:0;}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{
+    text-align:left;padding:10px 12px;background:var(--blue-100);color:var(--blue-800,var(--blue-700));
+    font-weight:700;font-size:12px;position:sticky;top:0;
+  }
+  th:first-child{border-radius:8px 0 0 8px;}
+  th:last-child{border-radius:0 8px 8px 0;}
+  td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  .table-wrap{overflow-x:auto;}
+  .tag{display:inline-block;padding:3px 10px;border-radius:99px;font-size:11.5px;font-weight:700;}
+  .tag-good{background:var(--success-bg);color:var(--success);}
+  .tag-bad{background:var(--danger-bg);color:var(--danger);}
+  .tag-blue{background:var(--blue-100);color:var(--blue-700);}
+  .tag-yellow{background:var(--yellow-100);color:#8A6300;}
+  .mono{font-variant-numeric:tabular-nums;}
+  .muted{color:var(--text-muted);}
+  .thumb{width:38px;height:38px;border-radius:8px;object-fit:cover;border:1px solid var(--border);cursor:pointer;}
+  .empty-state{padding:34px 20px;text-align:center;color:var(--text-muted);}
+  .empty-state .em-ic{font-size:30px;margin-bottom:8px;}
+
+  /* forms */
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:600px){.form-grid{grid-template-columns:1fr;}}
+  .fruit-picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-bottom:6px;}
+  .fruit-opt{
+    border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;
+  }
+  .fruit-opt.checked{border-color:var(--blue-500);background:var(--blue-100);}
+  .fruit-opt .fo-top{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px;}
+  .fruit-opt input[type=checkbox]{width:16px;height:16px;accent-color:var(--blue-500);}
+  .fruit-opt .fo-qty{display:flex;align-items:center;gap:6px;}
+  .fruit-opt .fo-qty input{width:100%;padding:7px 9px;}
+  .fruit-opt .fo-stock{font-size:11px;color:var(--text-muted);}
+  .pay-toggle{display:flex;gap:10px;}
+  .pay-opt{flex:1;padding:10px;border:1.5px solid var(--border);border-radius:9px;text-align:center;font-weight:600;font-size:13.5px;color:var(--text-muted);}
+  .pay-opt.checked{border-color:var(--blue-500);background:var(--blue-100);color:var(--blue-700);}
+  .file-drop{
+    border:1.5px dashed var(--border);border-radius:10px;padding:16px;text-align:center;font-size:13px;color:var(--text-muted);
+    cursor:pointer;background:#fcfcfa;
+  }
+  .file-drop.has-file{border-color:var(--success);color:var(--success);background:var(--success-bg);}
+  .preview-img{max-width:120px;max-height:120px;border-radius:8px;margin-top:10px;border:1px solid var(--border);}
+  .toast{
+    position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--blue-900);color:#fff;
+    padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:var(--shadow);z-index:50;
+    display:flex;align-items:center;gap:8px;
+  }
+  .modal-bg{position:fixed;inset:0;background:rgba(11,37,89,0.55);display:flex;align-items:center;justify-content:center;z-index:40;padding:20px;}
+  .modal{background:#fff;border-radius:14px;padding:20px;max-width:420px;width:100%;}
+  .modal img{width:100%;border-radius:8px;}
+  .close-x{float:right;background:none;border:none;font-size:18px;color:var(--text-muted);cursor:pointer;}
+  .tab-strip{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+  .tab-btn{padding:9px 16px;border-radius:9px;border:1.5px solid var(--border);background:#fff;font-weight:600;font-size:13.5px;color:var(--text-muted);}
+  .tab-btn.active{background:var(--blue-500);color:#fff;border-color:var(--blue-500);}
+  .kasir-big-btn{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+    padding:26px 14px;border-radius:16px;border:1.5px solid var(--border);background:#fff;font-weight:700;
+    font-size:15px;color:var(--blue-700);
+  }
+  .kasir-big-btn .ic{font-size:26px;}
+  .kasir-big-btn.active{background:linear-gradient(160deg,var(--blue-500),var(--blue-700));color:#fff;border-color:transparent;box-shadow:var(--shadow);}
+  .kasir-tabs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;max-width:420px;}
+  .footer-note{font-size:11.5px;color:var(--text-muted);text-align:center;margin-top:30px;}
+  svg{display:block;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============================================================
+   buahmurah.id — ERP (Kasir & Manajemen)
+   Penyimpanan: window.storage (shared) -> data sama di kedua akun
+   ============================================================ */
+
+const ACCOUNTS = {
+  kasir: { id: 'kasir1', password: 'kasir123', role: 'kasir', label: 'Kasir', loginType: 'id' },
+  manajemen: { email: 'irvan.effendy46@gmail.com', password: 'manajemen123', role: 'manajemen', label: 'Manajemen', loginType: 'email' }
+};
+
+let SESSION = null; // {role,label,identifier}  (in-memory only, hilang saat refresh)
+
+let DB = {
+  fruits: [],      // {id,name,stock,unit}
+  sales: [],        // {id,date,items:[{fruitId,name,qty}],payment,total,photo,createdAt}
+  expenses: [],      // {id,date,desc,amount,photo,createdAt}
+  kulakan: [],       // {id,date,desc,items:[{fruitId,name,qty}],amount,photo,createdAt}
+  gaji: [],           // {id,month,employee,totalDays,presentDays,basicSalary,kasbon,total}
+  stockopname: [],     // {id,date,desc,fruitId,fruitName,qty,condition}
+  manualCash: []        // {id,date,desc,debit,kredit,photo}
+};
+
+let LOADED = false;
+let currentView = 'penjualan';
+let toastTimer = null;
+
+/* ---------------- storage helpers ---------------- */
+async function loadAll(){
+  const keys = ['fruits','sales','expenses','kulakan','gaji','stockopname','manualCash'];
+  for(const k of keys){
+    try{
+      const r = await window.storage.get('erp:'+k, true);
+      DB[k] = r && r.value ? JSON.parse(r.value) : [];
+    }catch(e){ DB[k] = []; }
+  }
+  if(DB.fruits.length === 0){
+    DB.fruits = [
+      {id:'F1', name:'Apel Fuji', stock:50, unit:'kg'},
+      {id:'F2', name:'Jeruk Medan', stock:80, unit:'kg'},
+      {id:'F3', name:'Pisang Cavendish', stock:40, unit:'kg'},
+      {id:'F4', name:'Semangka', stock:30, unit:'kg'},
+      {id:'F5', name:'Anggur Import', stock:20, unit:'kg'}
+    ];
+    await saveKey('fruits');
+  }
+  LOADED = true;
+}
+async function saveKey(k){
+  try{ await window.storage.set('erp:'+k, JSON.stringify(DB[k]), true); }
+  catch(e){ showToast('Gagal menyimpan data. Coba lagi.'); }
+}
+function nextId(prefix, arr){
+  const n = arr.length + 1;
+  return prefix + '-' + String(n).padStart(4,'0');
+}
+function fmtRp(n){
+  n = Number(n)||0;
+  return 'Rp' + n.toLocaleString('id-ID');
+}
+function fmtDate(d){
+  if(!d) return '-';
+  const dt = new Date(d+'T00:00:00');
+  if(isNaN(dt)) return d;
+  return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+}
+function todayStr(){
+  const d = new Date();
+  return d.toISOString().slice(0,10);
+}
+function showToast(msg){
+  const el = document.getElementById('toast');
+  if(!el) return;
+  el.textContent = msg;
+  el.style.display = 'flex';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ el.style.display='none'; }, 2600);
+}
+
+/* compress + base64-encode uploaded photo */
+function fileToCompressedBase64(file){
+  return new Promise((resolve,reject)=>{
+    if(!file){ resolve(null); return; }
+    const reader = new FileReader();
+    reader.onload = e=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxW = 720;
+        const scale = Math.min(1, maxW/img.width);
+        const w = Math.round(img.width*scale), h = Math.round(img.height*scale);
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/jpeg', 0.62));
+      };
+      img.onerror = ()=> resolve(null);
+      img.src = e.target.result;
+    };
+    reader.onerror = ()=> reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---------------- cashflow aggregation ---------------- */
+function buildCashflow(){
+  const rows = [];
+  DB.sales.forEach(s=> rows.push({
+    date:s.date, desc:'Penjualan buah ('+s.items.map(i=>i.name+' '+i.qty+'kg').join(', ')+')'+(s.payment?' — '+s.payment:''),
+    debit:0, kredit:Number(s.total)||0, photo:s.photo, sort:s.createdAt||s.date, source:'Kasir'
+  }));
+  DB.expenses.forEach(e=> rows.push({
+    date:e.date, desc:'Pengeluaran: '+e.desc, debit:Number(e.amount)||0, kredit:0, photo:e.photo, sort:e.createdAt||e.date, source:'Kasir'
+  }));
+  DB.kulakan.forEach(k=> rows.push({
+    date:k.date, desc:'Kulakan: '+(k.desc || k.items.map(i=>i.name+' '+i.qty+'kg').join(', ')),
+    debit:Number(k.amount)||0, kredit:0, photo:k.photo, sort:k.createdAt||k.date, source:'Manajemen'
+  }));
+  DB.manualCash.forEach(m=> rows.push({
+    date:m.date, desc:m.desc, debit:Number(m.debit)||0, kredit:Number(m.kredit)||0, photo:m.photo, sort:m.createdAt||m.date, source:'Manual'
+  }));
+  rows.sort((a,b)=> (a.sort||'').localeCompare(b.sort||''));
+  let saldo = 0;
+  rows.forEach((r,i)=>{
+    saldo += r.kredit - r.debit;
+    r.saldo = saldo;
+    r.no = i+1;
+  });
+  return rows;
+}
+
+/* ============================================================
+   RENDER: LOGIN
+   ============================================================ */
+let loginRole = 'kasir';
+function renderLogin(err){
+  const app = document.getElementById('app');
+  app.innerHTML = `
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-side">
+        <div>
+          <div class="brand">buahmurah<span class="dot">.id</span></div>
+          <p style="margin-top:6px;">Sistem kasir &amp; manajemen toko buah</p>
+        </div>
+        <div class="login-tagline">
+          Satu sistem untuk pencatatan penjualan, pengeluaran, kulakan, gaji, dan stock opname — kasir dan manajemen selalu melihat data yang sama.
+        </div>
+      </div>
+      <div class="login-form-side">
+        <h2 style="margin:0 0 4px;font-size:20px;">Masuk ke akun</h2>
+        <p class="muted" style="margin:0 0 20px;font-size:13px;">Pilih jenis akun lalu masuk dengan email &amp; kata sandi.</p>
+        <div class="role-picker">
+          <button class="role-btn ${loginRole==='kasir'?'active':''}" data-role="kasir" type="button">Akun Kasir</button>
+          <button class="role-btn ${loginRole==='manajemen'?'active':''}" data-role="manajemen" type="button">Akun Manajemen</button>
+        </div>
+        ${err ? `<div class="login-error">${err}</div>` : ''}
+        <form id="loginForm">
+          <div class="field">
+            ${loginRole==='kasir' ? `
+              <label>ID Kasir</label>
+              <input type="text" id="loginId" placeholder="cth. kasir1" required autocomplete="username">
+            ` : `
+              <label>Email</label>
+              <input type="email" id="loginId" placeholder="nama@gmail.com" required autocomplete="username">
+            `}
+          </div>
+          <div class="field">
+            <label>Kata sandi</label>
+            <input type="password" id="loginPass" placeholder="Kata sandi" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Masuk sebagai ${ACCOUNTS[loginRole].label}</button>
+        </form>
+        <div class="login-hint">
+          Contoh akun demo — Kasir: ID <b>kasir1</b> / sandi <b>kasir123</b>. Manajemen: <b>irvan.effendy46@gmail.com</b> / sandi <b>manajemen123</b>.
+        </div>
+      </div>
+    </div>
+  </div>`;
+  document.querySelectorAll('.role-btn').forEach(b=>{
+    b.onclick = ()=>{ loginRole = b.dataset.role; renderLogin(); };
+  });
+  document.getElementById('loginForm').onsubmit = (e)=>{
+    e.preventDefault();
+    const input = document.getElementById('loginId').value.trim().toLowerCase();
+    const pass = document.getElementById('loginPass').value;
+    const acc = ACCOUNTS[loginRole];
+    const expected = (acc.loginType==='id' ? acc.id : acc.email).toLowerCase();
+    if(input === expected && pass === acc.password){
+      SESSION = { role: acc.role, label: acc.label, identifier: acc.loginType==='id' ? acc.id : acc.email };
+      currentView = acc.role === 'kasir' ? 'penjualan' : 'cashflow';
+      renderApp();
+    } else {
+      renderLogin(acc.loginType==='id' ? 'ID atau kata sandi salah. Silakan coba lagi.' : 'Email atau kata sandi salah. Silakan coba lagi.');
+    }
+  };
+}
+
+/* ============================================================
+   SHELL
+   ============================================================ */
+const NAV = {
+  kasir: [
+    {id:'penjualan', label:'Penjualan', ic:icCart()},
+    {id:'pengeluaran', label:'Pengeluaran', ic:icOut()}
+  ],
+  manajemen: [
+    {id:'cashflow', label:'Cashflow', ic:icFlow()},
+    {id:'jenisbuah', label:'Jenis Buah', ic:icFruit()},
+    {id:'kulakan', label:'Kulakan', ic:icBox()},
+    {id:'gaji', label:'Gaji', ic:icWallet()},
+    {id:'stockopname', label:'Stock Opname', ic:icCheck()}
+  ]
+};
+const VIEW_TITLE = {
+  penjualan:['Penjualan','Catat transaksi penjualan buah'],
+  pengeluaran:['Pengeluaran','Catat pengeluaran toko'],
+  cashflow:['Cashflow','Arus kas terintegrasi dari kasir &amp; kulakan'],
+  jenisbuah:['Jenis Buah','Master data &amp; stok buah'],
+  kulakan:['Kulakan','Pembelian stok ke pemasok'],
+  gaji:['Gaji','Penggajian karyawan bulanan'],
+  stockopname:['Stock Opname','Pemeriksaan kondisi stok fisik']
+};
+
+function renderApp(){
+  const app = document.getElementById('app');
+  const role = SESSION.role;
+  const items = NAV[role];
+  const [title, sub] = VIEW_TITLE[currentView];
+  app.innerHTML = `
+  <div class="mobile-topbar">
+    <div class="brand">buahmurah<span style="color:var(--yellow-500)">.id</span></div>
+    <button class="btn btn-ghost" id="mLogout" style="color:#fff;border-color:rgba(255,255,255,0.35);padding:7px 12px;font-size:12.5px;">Keluar</button>
+  </div>
+  <div class="mobile-tabs">
+    ${items.map(it=>`<button class="nav-item ${currentView===it.id?'active':''}" data-view="${it.id}">${it.ic}<span>${it.label}</span></button>`).join('')}
+  </div>
+  <div class="shell">
+    <div class="sidebar">
+      <div class="brand">buahmurah<span style="color:var(--yellow-500)">.id</span></div>
+      <div class="role-tag">${role==='kasir'?'AKUN KASIR':'AKUN MANAJEMEN'}</div>
+      <div>
+        ${items.map(it=>`<button class="nav-item ${currentView===it.id?'active':''}" data-view="${it.id}">${it.ic}<span>${it.label}</span></button>`).join('')}
+      </div>
+      <div class="sidebar-foot">
+        <div class="user-chip">${SESSION.identifier}</div>
+        <button class="btn btn-ghost btn-block" id="logoutBtn" style="color:#fff;border-color:rgba(255,255,255,0.3);">Keluar</button>
+      </div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div><h1>${title}</h1><div class="sub">${sub}</div></div>
+      </div>
+      <div class="content" id="content"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" style="display:none;"></div>
+  `;
+  document.querySelectorAll('[data-view]').forEach(b=>{
+    b.onclick = ()=>{ currentView = b.dataset.view; renderApp(); };
+  });
+  const doLogout = ()=>{ SESSION = null; renderLogin(); };
+  document.getElementById('logoutBtn').onclick = doLogout;
+  const ml = document.getElementById('mLogout'); if(ml) ml.onclick = doLogout;
+
+  renderView();
+}
+
+function renderView(){
+  const c = document.getElementById('content');
+  if(!c) return;
+  if(currentView==='penjualan') return renderPenjualan(c);
+  if(currentView==='pengeluaran') return renderPengeluaran(c);
+  if(currentView==='cashflow') return renderCashflow(c);
+  if(currentView==='jenisbuah') return renderJenisBuah(c);
+  if(currentView==='kulakan') return renderKulakan(c);
+  if(currentView==='gaji') return renderGaji(c);
+  if(currentView==='stockopname') return renderStockOpname(c);
+}
+
+/* ============================================================
+   ICONS (inline svg, stroke = currentColor)
+   ============================================================ */
+function icBase(paths){ return `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`; }
+function icCart(){ return icBase('<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>'); }
+function icOut(){ return icBase('<path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>'); }
+function icFlow(){ return icBase('<path d="M3 12h4l3 8 4-16 3 8h4"/>'); }
+function icFruit(){ return icBase('<circle cx="12" cy="13" r="7"/><path d="M12 6c0-2 1.5-3 3-3"/>'); }
+function icBox(){ return icBase('<path d="M21 8L12 3 3 8v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/>'); }
+function icWallet(){ return icBase('<rect x="2" y="6" width="20" height="14" rx="2"/><path d="M16 12h.01"/><path d="M2 10h20"/>'); }
+function icCheck(){ return icBase('<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'); }
+function icCam(){ return icBase('<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>'); }
+
+/* ============================================================
+   KASIR — PENJUALAN
+   ============================================================ */
+let saleSelected = {}; // fruitId -> qty
+let salePayment = 'Cash';
+let salePhoto = null;
+
+function renderPenjualan(c){
+  const fruits = DB.fruits;
+  const recent = [...DB.sales].sort((a,b)=> (b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,8);
+  c.innerHTML = `
+  <div class="card">
+    <div class="card-head"><h2>Transaksi penjualan baru</h2></div>
+    <div class="field"><label>Tanggal</label><input type="date" id="saleDate" value="${todayStr()}"></div>
+    <div class="field">
+      <label>Daftar buah (pilih satu atau lebih)</label>
+      <div class="fruit-picker" id="fruitPicker">
+        ${fruits.map(f=>`
+          <div class="fruit-opt ${saleSelected[f.id]!==undefined?'checked':''}" data-fid="${f.id}">
+            <div class="fo-top">
+              <input type="checkbox" data-check="${f.id}" ${saleSelected[f.id]!==undefined?'checked':''}>
+              <span>${f.name}</span>
+            </div>
+            <div class="fo-qty" style="${saleSelected[f.id]!==undefined?'':'display:none'}">
+              <input type="number" min="0.1" step="0.1" placeholder="Jumlah" data-qty="${f.id}" value="${saleSelected[f.id]||''}">
+              <span class="muted">kg</span>
+            </div>
+            <div class="fo-stock">Stok: ${f.stock} ${f.unit}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="field">
+      <label>Metode pembayaran</label>
+      <div class="pay-toggle">
+        <button type="button" class="pay-opt ${salePayment==='Cash'?'checked':''}" data-pay="Cash">Cash</button>
+        <button type="button" class="pay-opt ${salePayment==='Transfer'?'checked':''}" data-pay="Transfer">Transfer</button>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Total penjualan (Rp)</label><input type="number" min="0" id="saleTotal" placeholder="cth. 75000"></div>
+      <div class="field">
+        <label>Foto bukti pembayaran</label>
+        <div class="file-drop" id="saleDrop">Ketuk untuk unggah foto (cash / transfer)</div>
+        <input type="file" accept="image/*" id="saleFile" style="display:none">
+        <img id="salePreview" class="preview-img" style="display:none">
+      </div>
+    </div>
+    <button class="btn btn-primary" id="saleSubmit" style="margin-top:6px;">Submit / OK</button>
+  </div>
+
+  <div class="card">
+    <h2>Transaksi terbaru</h2>
+    ${recent.length===0 ? emptyState('Belum ada transaksi penjualan.') : `
+    <div class="table-wrap"><table>
+      <tr><th>Tanggal</th><th>Buah</th><th>Pembayaran</th><th>Total</th><th>Bukti</th></tr>
+      ${recent.map(s=>`<tr>
+        <td>${fmtDate(s.date)}</td>
+        <td>${s.items.map(i=>i.name+' ('+i.qty+'kg)').join(', ')}</td>
+        <td><span class="tag ${s.payment==='Cash'?'tag-yellow':'tag-blue'}">${s.payment}</span></td>
+        <td class="mono">${fmtRp(s.total)}</td>
+        <td>${s.photo?`<img class="thumb" src="${s.photo}" data-photo="${s.photo}">`:'<span class="muted">-</span>'}</td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>
+  `;
+
+  document.querySelectorAll('[data-check]').forEach(chk=>{
+    chk.onchange = ()=>{
+      const fid = chk.dataset.check;
+      if(chk.checked){ saleSelected[fid] = saleSelected[fid] || ''; }
+      else { delete saleSelected[fid]; }
+      renderPenjualan(c);
+    };
+  });
+  document.querySelectorAll('[data-qty]').forEach(inp=>{
+    inp.oninput = ()=>{ saleSelected[inp.dataset.qty] = inp.value; };
+  });
+  document.querySelectorAll('[data-pay]').forEach(b=>{
+    b.onclick = ()=>{ salePayment = b.dataset.pay; renderPenjualan(c); };
+  });
+  const drop = document.getElementById('saleDrop');
+  const fileInput = document.getElementById('saleFile');
+  drop.onclick = ()=> fileInput.click();
+  fileInput.onchange = async ()=>{
+    const f = fileInput.files[0];
+    if(!f) return;
+    drop.textContent = 'Memproses foto...';
+    salePhoto = await fileToCompressedBase64(f);
+    drop.textContent = 'Foto terpasang: '+f.name;
+    drop.classList.add('has-file');
+    const prev = document.getElementById('salePreview');
+    prev.src = salePhoto; prev.style.display='block';
+  };
+  attachThumbClicks(c);
+
+  document.getElementById('saleSubmit').onclick = async ()=>{
+    const date = document.getElementById('saleDate').value || todayStr();
+    const total = Number(document.getElementById('saleTotal').value);
+    const items = Object.keys(saleSelected).map(fid=>{
+      const f = DB.fruits.find(x=>x.id===fid);
+      return { fruitId:fid, name:f?f.name:fid, qty:Number(saleSelected[fid]) };
+    }).filter(i=>i.qty>0);
+
+    if(items.length===0){ showToast('Pilih minimal satu buah dan isi jumlahnya.'); return; }
+    if(!total || total<=0){ showToast('Isi total penjualan (Rp).'); return; }
+
+    for(const it of items){
+      const f = DB.fruits.find(x=>x.id===it.fruitId);
+      if(f && it.qty > f.stock){ showToast(`Stok ${f.name} tidak cukup (sisa ${f.stock}kg).`); return; }
+    }
+
+    items.forEach(it=>{
+      const f = DB.fruits.find(x=>x.id===it.fruitId);
+      if(f) f.stock = Math.max(0, +(f.stock - it.qty).toFixed(2));
+    });
+    await saveKey('fruits');
+
+    DB.sales.push({
+      id: nextId('PJ', DB.sales), date, items, payment: salePayment, total,
+      photo: salePhoto, createdAt: new Date().toISOString()
+    });
+    await saveKey('sales');
+
+    saleSelected = {}; salePayment = 'Cash'; salePhoto = null;
+    showToast('Transaksi penjualan tersimpan.');
+    renderPenjualan(c);
+  };
+}
+
+/* ============================================================
+   KASIR — PENGELUARAN
+   ============================================================ */
+let expPhoto = null;
+function renderPengeluaran(c){
+  const recent = [...DB.expenses].sort((a,b)=> (b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,8);
+  c.innerHTML = `
+  <div class="card">
+    <div class="card-head"><h2>Catat pengeluaran</h2></div>
+    <div class="form-grid">
+      <div class="field"><label>Tanggal</label><input type="date" id="expDate" value="${todayStr()}"></div>
+      <div class="field"><label>Nominal (Rp)</label><input type="number" min="0" id="expAmount" placeholder="cth. 50000"></div>
+    </div>
+    <div class="field"><label>Keterangan</label><input type="text" id="expDesc" placeholder="cth. Beli kantong plastik"></div>
+    <div class="field">
+      <label>Foto bukti pembayaran</label>
+      <div class="file-drop" id="expDrop">Ketuk untuk unggah foto</div>
+      <input type="file" accept="image/*" id="expFile" style="display:none">
+      <img id="expPreview" class="preview-img" style="display:none">
+    </div>
+    <button class="btn btn-primary" id="expSubmit" style="margin-top:6px;">Submit / OK</button>
+  </div>
+
+  <div class="card">
+    <h2>Pengeluaran terbaru</h2>
+    ${recent.length===0 ? emptyState('Belum ada pengeluaran tercatat.') : `
+    <div class="table-wrap"><table>
+      <tr><th>Tanggal</th><th>Keterangan</th><th>Nominal</th><th>Bukti</th></tr>
+      ${recent.map(e=>`<tr>
+        <td>${fmtDate(e.date)}</td><td>${e.desc}</td><td class="mono">${fmtRp(e.amount)}</td>
+        <td>${e.photo?`<img class="thumb" src="${e.photo}" data-photo="${e.photo}">`:'<span class="muted">-</span>'}</td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>`;
+
+  const drop = document.getElementById('expDrop');
+  const fileInput = document.getElementById('expFile');
+  drop.onclick = ()=> fileInput.click();
+  fileInput.onchange = async ()=>{
+    const f = fileInput.files[0]; if(!f) return;
+    drop.textContent = 'Memproses foto...';
+    expPhoto = await fileToCompressedBase64(f);
+    drop.textContent = 'Foto terpasang: '+f.name; drop.classList.add('has-file');
+    const prev = document.getElementById('expPreview'); prev.src = expPhoto; prev.style.display='block';
+  };
+  attachThumbClicks(c);
+
+  document.getElementById('expSubmit').onclick = async ()=>{
+    const date = document.getElementById('expDate').value || todayStr();
+    const amount = Number(document.getElementById('expAmount').value);
+    const desc = document.getElementById('expDesc').value.trim();
+    if(!desc){ showToast('Isi keterangan pengeluaran.'); return; }
+    if(!amount || amount<=0){ showToast('Isi nominal pengeluaran.'); return; }
+    DB.expenses.push({ id: nextId('PG', DB.expenses), date, desc, amount, photo: expPhoto, createdAt: new Date().toISOString() });
+    await saveKey('expenses');
+    expPhoto = null;
+    showToast('Pengeluaran tersimpan.');
+    renderPengeluaran(c);
+  };
+}
+
+/* ============================================================
+   MANAJEMEN — CASHFLOW
+   ============================================================ */
+function renderCashflow(c){
+  const rows = buildCashflow();
+  const totalKredit = rows.reduce((s,r)=>s+r.kredit,0);
+  const totalDebit = rows.reduce((s,r)=>s+r.debit,0);
+  const saldoAkhir = rows.length ? rows[rows.length-1].saldo : 0;
+  c.innerHTML = `
+  <div class="stat-row">
+    <div class="stat-card"><div class="lbl">Total Pemasukan (Kredit)</div><div class="big-num pos">${fmtRp(totalKredit)}</div></div>
+    <div class="stat-card"><div class="lbl">Total Pengeluaran (Debit)</div><div class="big-num neg">${fmtRp(totalDebit)}</div></div>
+    <div class="stat-card"><div class="lbl">Saldo Akhir</div><div class="big-num">${fmtRp(saldoAkhir)}</div></div>
+  </div>
+  <div class="card">
+    <div class="card-head">
+      <h2>Buku kas (otomatis dari Kasir &amp; Kulakan)</h2>
+      <button class="btn btn-ghost" id="addManual">+ Entri manual</button>
+    </div>
+    ${rows.length===0 ? emptyState('Belum ada transaksi. Cashflow terisi otomatis dari Penjualan, Pengeluaran, dan Kulakan.') : `
+    <div class="table-wrap"><table>
+      <tr><th>No</th><th>Tanggal</th><th>Keterangan</th><th>Debit</th><th>Kredit</th><th>Saldo</th><th>Bukti</th></tr>
+      ${rows.map(r=>`<tr>
+        <td>${r.no}</td><td>${fmtDate(r.date)}</td><td>${r.desc}</td>
+        <td class="mono">${r.debit?fmtRp(r.debit):'-'}</td>
+        <td class="mono">${r.kredit?fmtRp(r.kredit):'-'}</td>
+        <td class="mono"><b>${fmtRp(r.saldo)}</b></td>
+        <td>${r.photo?`<img class="thumb" src="${r.photo}" data-photo="${r.photo}">`:'<span class="muted">-</span>'}</td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>`;
+  attachThumbClicks(c);
+  document.getElementById('addManual').onclick = ()=> openManualCashModal(c);
+}
+
+function openManualCashModal(c){
+  const bg = document.createElement('div');
+  bg.className = 'modal-bg';
+  bg.innerHTML = `
+  <div class="modal" style="max-width:420px;">
+    <button class="close-x" id="mcClose">&times;</button>
+    <h2 style="margin-top:0;font-size:16px;">Tambah entri manual</h2>
+    <div class="field"><label>Tanggal</label><input type="date" id="mcDate" value="${todayStr()}"></div>
+    <div class="field"><label>Keterangan</label><input type="text" id="mcDesc" placeholder="cth. Saldo awal kas"></div>
+    <div class="form-grid">
+      <div class="field"><label>Debit (Rp)</label><input type="number" min="0" id="mcDebit" placeholder="0"></div>
+      <div class="field"><label>Kredit (Rp)</label><input type="number" min="0" id="mcKredit" placeholder="0"></div>
+    </div>
+    <button class="btn btn-primary btn-block" id="mcSave">Simpan</button>
+  </div>`;
+  document.body.appendChild(bg);
+  document.getElementById('mcClose').onclick = ()=> bg.remove();
+  bg.onclick = (e)=>{ if(e.target===bg) bg.remove(); };
+  document.getElementById('mcSave').onclick = async ()=>{
+    const date = document.getElementById('mcDate').value || todayStr();
+    const desc = document.getElementById('mcDesc').value.trim();
+    const debit = Number(document.getElementById('mcDebit').value)||0;
+    const kredit = Number(document.getElementById('mcKredit').value)||0;
+    if(!desc){ showToast('Isi keterangan.'); return; }
+    if(debit===0 && kredit===0){ showToast('Isi debit atau kredit.'); return; }
+    DB.manualCash.push({ id: nextId('MN', DB.manualCash), date, desc, debit, kredit, photo:null, createdAt:new Date().toISOString() });
+    await saveKey('manualCash');
+    bg.remove();
+    showToast('Entri manual tersimpan.');
+    renderCashflow(c);
+  };
+}
+
+/* ============================================================
+   MANAJEMEN — JENIS BUAH
+   ============================================================ */
+function renderJenisBuah(c){
+  c.innerHTML = `
+  <div class="card">
+    <div class="card-head"><h2>Tambah jenis buah</h2></div>
+    <div class="form-grid" style="grid-template-columns:2fr 1fr 1fr;">
+      <div class="field"><label>Nama buah</label><input type="text" id="jbName" placeholder="cth. Mangga Harum Manis"></div>
+      <div class="field"><label>Jumlah stok awal</label><input type="number" min="0" step="0.1" id="jbStock" placeholder="0"></div>
+      <div class="field"><label>Satuan</label><input type="text" id="jbUnit" value="kg"></div>
+    </div>
+    <button class="btn btn-primary" id="jbAdd">Tambah</button>
+  </div>
+  <div class="card">
+    <h2>Daftar &amp; stok buah</h2>
+    ${DB.fruits.length===0 ? emptyState('Belum ada jenis buah.') : `
+    <div class="table-wrap"><table>
+      <tr><th>Jenis buah</th><th>Jumlah</th><th>Satuan</th><th></th></tr>
+      ${DB.fruits.map(f=>`<tr>
+        <td>${f.name}</td>
+        <td class="mono">${f.stock <= 5 ? `<span class="tag tag-bad">${f.stock}</span>` : f.stock}</td>
+        <td>${f.unit}</td>
+        <td><button class="btn btn-danger" data-del="${f.id}" style="padding:6px 10px;font-size:12px;">Hapus</button></td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>`;
+
+  document.getElementById('jbAdd').onclick = async ()=>{
+    const name = document.getElementById('jbName').value.trim();
+    const stock = Number(document.getElementById('jbStock').value)||0;
+    const unit = document.getElementById('jbUnit').value.trim() || 'kg';
+    if(!name){ showToast('Isi nama buah.'); return; }
+    DB.fruits.push({ id:'F'+(Date.now()), name, stock, unit });
+    await saveKey('fruits');
+    showToast('Jenis buah ditambahkan.');
+    renderJenisBuah(c);
+  };
+  document.querySelectorAll('[data-del]').forEach(b=>{
+    b.onclick = async ()=>{
+      if(!confirm('Hapus jenis buah ini?')) return;
+      DB.fruits = DB.fruits.filter(f=>f.id!==b.dataset.del);
+      await saveKey('fruits');
+      renderJenisBuah(c);
+    };
+  });
+}
+
+/* ============================================================
+   MANAJEMEN — KULAKAN
+   ============================================================ */
+let kulakanSelected = {};
+let kulakanPhoto = null;
+function renderKulakan(c){
+  const fruits = DB.fruits;
+  const recent = [...DB.kulakan].sort((a,b)=> (b.createdAt||'').localeCompare(a.createdAt||'')).slice(0,8);
+  c.innerHTML = `
+  <div class="card">
+    <div class="card-head"><h2>Kulakan (belanja stok)</h2></div>
+    <div class="field"><label>Tanggal</label><input type="date" id="kkDate" value="${todayStr()}"></div>
+    <div class="field">
+      <label>Buah yang dibeli</label>
+      <div class="fruit-picker">
+        ${fruits.map(f=>`
+          <div class="fruit-opt ${kulakanSelected[f.id]!==undefined?'checked':''}">
+            <div class="fo-top"><input type="checkbox" data-kcheck="${f.id}" ${kulakanSelected[f.id]!==undefined?'checked':''}><span>${f.name}</span></div>
+            <div class="fo-qty" style="${kulakanSelected[f.id]!==undefined?'':'display:none'}">
+              <input type="number" min="0.1" step="0.1" placeholder="Jumlah" data-kqty="${f.id}" value="${kulakanSelected[f.id]||''}"><span class="muted">kg</span>
+            </div>
+            <div class="fo-stock">Stok saat ini: ${f.stock} ${f.unit}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Keterangan (opsional)</label><input type="text" id="kkDesc" placeholder="cth. Beli dari Pasar Induk"></div>
+      <div class="field"><label>Nominal (Rp)</label><input type="number" min="0" id="kkAmount" placeholder="cth. 500000"></div>
+    </div>
+    <div class="field">
+      <label>Foto bukti pembayaran</label>
+      <div class="file-drop" id="kkDrop">Ketuk untuk unggah foto</div>
+      <input type="file" accept="image/*" id="kkFile" style="display:none">
+      <img id="kkPreview" class="preview-img" style="display:none">
+    </div>
+    <button class="btn btn-primary" id="kkSubmit" style="margin-top:6px;">Submit / OK</button>
+  </div>
+  <div class="card">
+    <h2>Riwayat kulakan</h2>
+    ${recent.length===0 ? emptyState('Belum ada transaksi kulakan.') : `
+    <div class="table-wrap"><table>
+      <tr><th>Tanggal</th><th>Buah</th><th>Nominal</th><th>Bukti</th></tr>
+      ${recent.map(k=>`<tr>
+        <td>${fmtDate(k.date)}</td><td>${k.items.map(i=>i.name+' ('+i.qty+'kg)').join(', ')}</td>
+        <td class="mono">${fmtRp(k.amount)}</td>
+        <td>${k.photo?`<img class="thumb" src="${k.photo}" data-photo="${k.photo}">`:'<span class="muted">-</span>'}</td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>`;
+
+  document.querySelectorAll('[data-kcheck]').forEach(chk=>{
+    chk.onchange = ()=>{
+      const fid = chk.dataset.kcheck;
+      if(chk.checked){ kulakanSelected[fid] = kulakanSelected[fid]||''; } else { delete kulakanSelected[fid]; }
+      renderKulakan(c);
+    };
+  });
+  document.querySelectorAll('[data-kqty]').forEach(inp=>{ inp.oninput = ()=>{ kulakanSelected[inp.dataset.kqty] = inp.value; }; });
+
+  const drop = document.getElementById('kkDrop');
+  const fileInput = document.getElementById('kkFile');
+  drop.onclick = ()=> fileInput.click();
+  fileInput.onchange = async ()=>{
+    const f = fileInput.files[0]; if(!f) return;
+    drop.textContent = 'Memproses foto...';
+    kulakanPhoto = await fileToCompressedBase64(f);
+    drop.textContent = 'Foto terpasang: '+f.name; drop.classList.add('has-file');
+    const prev = document.getElementById('kkPreview'); prev.src = kulakanPhoto; prev.style.display='block';
+  };
+  attachThumbClicks(c);
+
+  document.getElementById('kkSubmit').onclick = async ()=>{
+    const date = document.getElementById('kkDate').value || todayStr();
+    const desc = document.getElementById('kkDesc').value.trim();
+    const amount = Number(document.getElementById('kkAmount').value);
+    const items = Object.keys(kulakanSelected).map(fid=>{
+      const f = DB.fruits.find(x=>x.id===fid);
+      return { fruitId:fid, name:f?f.name:fid, qty:Number(kulakanSelected[fid]) };
+    }).filter(i=>i.qty>0);
+    if(items.length===0){ showToast('Pilih minimal satu buah dan isi jumlahnya.'); return; }
+    if(!amount || amount<=0){ showToast('Isi nominal kulakan.'); return; }
+
+    items.forEach(it=>{
+      const f = DB.fruits.find(x=>x.id===it.fruitId);
+      if(f) f.stock = +(f.stock + it.qty).toFixed(2);
+    });
+    await saveKey('fruits');
+
+    DB.kulakan.push({ id: nextId('KL', DB.kulakan), date, desc, items, amount, photo: kulakanPhoto, createdAt: new Date().toISOString() });
+    await saveKey('kulakan');
+
+    kulakanSelected = {}; kulakanPhoto = null;
+    showToast('Kulakan tersimpan, stok diperbarui.');
+    renderKulakan(c);
+  };
+}
+
+/* ============================================================
+   MANAJEMEN — GAJI
+   ============================================================ */
+function renderGaji(c){
+  const recent = [...DB.gaji].sort((a,b)=> (b.id||'').localeCompare(a.id||''));
+  c.innerHTML = `
+  <div class="card">
+    <div class="card-head"><h2>Input gaji</h2></div>
+    <div class="form-grid">
+      <div class="field"><label>Bulan</label><input type="month" id="gjMonth" value="${todayStr().slice(0,7)}"></div>
+      <div class="field"><label>Nama karyawan</label><input type="text" id="gjEmployee" placeholder="cth. Budi"></div>
+    </div>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr 1fr;">
+      <div class="field"><label>Total hari kerja</label><input type="number" min="0" id="gjTotalDays" placeholder="cth. 26"></div>
+      <div class="field"><label>Absensi (hari hadir)</label><input type="number" min="0" id="gjPresent" placeholder="cth. 24"></div>
+      <div class="field"><label>Gaji pokok (Rp)</label><input type="number" min="0" id="gjBasic" placeholder="cth. 2500000"></div>
+    </div>
+    <div class="field"><label>Kasbon (Rp)</label><input type="number" min="0" id="gjKasbon" placeholder="0"></div>
+    <button class="btn btn-primary" id="gjSubmit">Simpan</button>
+  </div>
+  <div class="card">
+    <h2>Rekap gaji</h2>
+    ${recent.length===0 ? emptyState('Belum ada data gaji.') : `
+    <div class="table-wrap"><table>
+      <tr><th>No</th><th>Bulan</th><th>Karyawan</th><th>Absensi</th><th>Kasbon</th><th>Total</th></tr>
+      ${recent.map(g=>`<tr>
+        <td>${g.id}</td><td>${g.month}</td><td>${g.employee}</td>
+        <td>${g.presentDays}/${g.totalDays} hari</td>
+        <td class="mono">${fmtRp(g.kasbon)}</td>
+        <td class="mono"><b>${fmtRp(g.total)}</b></td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>`;
+
+  document.getElementById('gjSubmit').onclick = async ()=>{
+    const month = document.getElementById('gjMonth').value;
+    const employee = document.getElementById('gjEmployee').value.trim();
+    const totalDays = Number(document.getElementById('gjTotalDays').value);
+    const presentDays = Number(document.getElementById('gjPresent').value);
+    const basicSalary = Number(document.getElementById('gjBasic').value);
+    const kasbon = Number(document.getElementById('gjKasbon').value)||0;
+    if(!employee){ showToast('Isi nama karyawan.'); return; }
+    if(!month){ showToast('Pilih bulan.'); return; }
+    if(!totalDays || !basicSalary){ showToast('Isi total hari kerja dan gaji pokok.'); return; }
+    const prorata = presentDays>=totalDays ? basicSalary : Math.round(basicSalary * (presentDays/totalDays));
+    const total = Math.max(0, prorata - kasbon);
+    DB.gaji.push({ id: nextId('GJ', DB.gaji), month, employee, totalDays, presentDays, basicSalary, kasbon, total });
+    await saveKey('gaji');
+    showToast('Data gaji tersimpan.');
+    renderGaji(c);
+  };
+}
+
+/* ============================================================
+   MANAJEMEN — STOCK OPNAME
+   ============================================================ */
+function renderStockOpname(c){
+  const fruits = DB.fruits;
+  const recent = [...DB.stockopname].sort((a,b)=> (b.id||'').localeCompare(a.id||''));
+  c.innerHTML = `
+  <div class="card">
+    <div class="card-head"><h2>Catat stock opname</h2></div>
+    <div class="form-grid">
+      <div class="field"><label>Tanggal</label><input type="date" id="soDate" value="${todayStr()}"></div>
+      <div class="field"><label>Buah diperiksa</label>
+        <select id="soFruit">${fruits.map(f=>`<option value="${f.id}">${f.name} (stok: ${f.stock}${f.unit})</option>`).join('')}</select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Jumlah diperiksa</label><input type="number" min="0" step="0.1" id="soQty" placeholder="cth. 5"></div>
+      <div class="field"><label>Kondisi</label>
+        <div class="pay-toggle">
+          <button type="button" class="pay-opt checked" data-cond="Baik">Baik</button>
+          <button type="button" class="pay-opt" data-cond="Rusak">Rusak</button>
+        </div>
+      </div>
+    </div>
+    <div class="field"><label>Keterangan</label><input type="text" id="soDesc" placeholder="cth. Beberapa buah mulai busuk di bagian bawah"></div>
+    <button class="btn btn-primary" id="soSubmit">Submit / OK</button>
+    <div class="muted" style="font-size:12px;margin-top:8px;">Jika kondisi "Rusak" dipilih, jumlah tersebut otomatis dikurangi dari stok buah.</div>
+  </div>
+  <div class="card">
+    <h2>Riwayat stock opname</h2>
+    ${recent.length===0 ? emptyState('Belum ada catatan stock opname.') : `
+    <div class="table-wrap"><table>
+      <tr><th>No</th><th>Tanggal</th><th>Keterangan</th><th>Buah</th><th>Jumlah</th><th>Kondisi</th></tr>
+      ${recent.map(s=>`<tr>
+        <td>${s.id}</td><td>${fmtDate(s.date)}</td><td>${s.desc||'-'}</td><td>${s.fruitName}</td><td>${s.qty}</td>
+        <td><span class="tag ${s.condition==='Baik'?'tag-good':'tag-bad'}">${s.condition}</span></td>
+      </tr>`).join('')}
+    </table></div>`}
+  </div>`;
+
+  let soCondition = 'Baik';
+  document.querySelectorAll('[data-cond]').forEach(b=>{
+    b.onclick = ()=>{
+      soCondition = b.dataset.cond;
+      document.querySelectorAll('[data-cond]').forEach(x=>x.classList.remove('checked'));
+      b.classList.add('checked');
+    };
+  });
+
+  document.getElementById('soSubmit').onclick = async ()=>{
+    const date = document.getElementById('soDate').value || todayStr();
+    const fruitId = document.getElementById('soFruit').value;
+    const qty = Number(document.getElementById('soQty').value);
+    const desc = document.getElementById('soDesc').value.trim();
+    const f = DB.fruits.find(x=>x.id===fruitId);
+    if(!qty || qty<=0){ showToast('Isi jumlah yang diperiksa.'); return; }
+    DB.stockopname.push({ id: nextId('SO', DB.stockopname), date, desc, fruitId, fruitName: f?f.name:fruitId, qty, condition: soCondition });
+    await saveKey('stockopname');
+    if(soCondition==='Rusak' && f){
+      f.stock = Math.max(0, +(f.stock - qty).toFixed(2));
+      await saveKey('fruits');
+    }
+    showToast('Stock opname tersimpan.');
+    renderStockOpname(c);
+  };
+}
+
+/* ============================================================
+   Shared helpers
+   ============================================================ */
+function emptyState(msg){
+  return `<div class="empty-state"><div class="em-ic">🍊</div>${msg}</div>`;
+}
+function attachThumbClicks(c){
+  c.querySelectorAll('[data-photo]').forEach(img=>{
+    img.onclick = ()=>{
+      const bg = document.createElement('div');
+      bg.className = 'modal-bg';
+      bg.innerHTML = `<div class="modal"><button class="close-x" id="pmClose">&times;</button><img src="${img.dataset.photo}"></div>`;
+      document.body.appendChild(bg);
+      document.getElementById('pmClose').onclick = ()=> bg.remove();
+      bg.onclick = (e)=>{ if(e.target===bg) bg.remove(); };
+    };
+  });
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+async function init(){
+  document.getElementById('app').innerHTML = `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:14px;">Memuat data toko...</div>`;
+  await loadAll();
+  renderLogin();
+}
+init();
+
+/* Daftarkan service worker agar bisa di-"Install" sebagai app di Android/Chrome.
+   Hanya berfungsi jika file ini di-hosting via https (bukan dibuka langsung dari file lokal). */
+if('serviceWorker' in navigator && (location.protocol==='https:' || location.protocol==='http:')){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{ /* diamkan jika gagal, mis. dibuka via file:// */ });
+  });
+}
+</script>
+</body>
+</html>
