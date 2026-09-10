@@ -246,7 +246,7 @@ const SUPABASE_ANON_KEY = 'sb_publishable_p8JjGy_f8JEn4zA9n2_HDQ_8vSQm134';
 const PHOTO_BUCKET = 'bukti-pembayaran';
 /* ---------------------------------------------------- */
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const ACCOUNTS = {
   kasir: { id: 'kasir1', password: 'kasir123', role: 'kasir', label: 'Kasir', loginType: 'id' },
@@ -283,7 +283,7 @@ let toastTimer = null;
 /* ---------------- Supabase helpers ---------------- */
 async function reloadTable(key){
   const cfg = TABLES[key];
-  const { data, error } = await supabase.from(cfg.table).select('*').order('created_at', { ascending:true });
+  const { data, error } = await sb.from(cfg.table).select('*').order('created_at', { ascending:true });
   if(error){ showToast('Gagal memuat data dari Supabase ('+key+').'); return; }
   DB[key] = (data||[]).map(cfg.map);
 }
@@ -297,30 +297,30 @@ async function loadAll(){
       {id:'F4', name:'Semangka', stock:30, unit:'kg'},
       {id:'F5', name:'Anggur Import', stock:20, unit:'kg'}
     ];
-    const { error } = await supabase.from('fruits').insert(seed);
+    const { error } = await sb.from('fruits').insert(seed);
     if(error){ showToast('Gagal membuat data awal buah. Cek koneksi Supabase.'); }
     await reloadTable('fruits');
   }
   LOADED = true;
 }
 async function insertRow(key, obj){
-  const { error } = await supabase.from(TABLES[key].table).insert(obj);
+  const { error } = await sb.from(TABLES[key].table).insert(obj);
   if(error){ showToast('Gagal menyimpan: '+error.message); return false; }
   return true;
 }
 async function updateFruitStock(fruitId, newStock){
-  const { error } = await supabase.from('fruits').update({ stock:newStock }).eq('id', fruitId);
+  const { error } = await sb.from('fruits').update({ stock:newStock }).eq('id', fruitId);
   if(error){ showToast('Gagal memperbarui stok.'); return false; }
   return true;
 }
 async function deleteRow(key, id){
-  const { error } = await supabase.from(TABLES[key].table).delete().eq('id', id);
+  const { error } = await sb.from(TABLES[key].table).delete().eq('id', id);
   if(error){ showToast('Gagal menghapus data.'); return false; }
   return true;
 }
 function subscribeRealtime(){
   Object.entries(TABLES).forEach(([key, cfg])=>{
-    supabase.channel('rt_'+cfg.table)
+    sb.channel('rt_'+cfg.table)
       .on('postgres_changes', { event:'*', schema:'public', table:cfg.table }, async ()=>{
         await reloadTable(key);
         if(SESSION && document.getElementById('content')) renderView();
@@ -385,9 +385,9 @@ async function uploadPhoto(dataUrl, folder){
     const res = await fetch(dataUrl);
     const blob = await res.blob();
     const filename = folder+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.jpg';
-    const { error } = await supabase.storage.from(PHOTO_BUCKET).upload(filename, blob, { contentType:'image/jpeg' });
+    const { error } = await sb.storage.from(PHOTO_BUCKET).upload(filename, blob, { contentType:'image/jpeg' });
     if(error){ showToast('Gagal unggah foto ke Supabase Storage.'); return null; }
-    const { data } = supabase.storage.from(PHOTO_BUCKET).getPublicUrl(filename);
+    const { data } = sb.storage.from(PHOTO_BUCKET).getPublicUrl(filename);
     return data.publicUrl;
   }catch(e){ showToast('Gagal unggah foto.'); return null; }
 }
